@@ -33,7 +33,7 @@ def load_vgg(sess, vgg_path):
     vgg_layer4_out_tensor_name = 'layer4_out:0'
     vgg_layer7_out_tensor_name = 'layer7_out:0'
 
-    tf.saved_model_loader.load(sess, [vgg_tag], vgg_path)
+    tf.saved_model.loader.load(sess, [vgg_tag], vgg_path)
     graph = tf.get_default_graph()
     image_input = graph.get_tensor_by_name(vgg_input_tensor_name)
     keep_prob = graph.get_tensor_by_name(vgg_keep_prob_tensor_name)
@@ -64,11 +64,11 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
         kernel_regularizer = tf.contrib.layers.l2_regularizer(l2_reg))
 
     layer4_conv_out = tf.layers.conv2d(vgg_layer4_out, num_classes, (1, 1,), strides = (1, 1), padding = 'same',
-        kernel_initializer = tf.truncated_nomal_initializer(stddev=sigma),
+        kernel_initializer = tf.truncated_normal_initializer(stddev=sigma),
         kernel_regularizer = tf.contrib.layers.l2_regularizer(l2_reg))
 
     layer3_conv_out = tf.layers.conv2d(vgg_layer3_out, num_classes, (1, 1,), strides = (1, 1), padding = 'same',
-        kernel_initializer = tf.truncated_nomal_initializer(stddev=sigma),
+        kernel_initializer = tf.truncated_normal_initializer(stddev=sigma),
         kernel_regularizer = tf.contrib.layers.l2_regularizer(l2_reg))
 
     # 16x upsampled, decoder
@@ -173,7 +173,7 @@ def run():
 
         logits, train_op, loss = optimize(layer, label, learning_rate, num_classes)
         # TODO: Train NN using the train_nn function
-        sess.run(tf.global_variable_initializer())
+        sess.run(tf.global_variables_initializer())
         train_nn(sess, 20, 4, get_batches_fn, train_op,loss, input_image, label, keep_prob, learning_rate)
         
         # TODO: Save inference data using helper.save_inference_samples
