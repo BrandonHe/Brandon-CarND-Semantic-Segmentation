@@ -113,8 +113,8 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
 
     # Regularization
     # Project reviewer suggestion, tested as not good as not use regularization
-    reg_losses = tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES)
-    cross_entropy_loss = cross_entropy_loss + sum(reg_losses)
+    #reg_losses = tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES)
+    #cross_entropy_loss = cross_entropy_loss + sum(reg_losses)
 
     train_op = tf.train.AdamOptimizer(learning_rate).minimize(cross_entropy_loss)
 
